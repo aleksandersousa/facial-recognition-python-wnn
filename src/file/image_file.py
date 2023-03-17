@@ -16,34 +16,11 @@ class ImageFile:
         self.mp_drawing = mp.solutions.drawing_utils
 
     def read_img(self, path):
-        return cv2.imread(path, 0)
+        img = cv2.imread(path, 0)
 
-    def get_img_input(self, img):
-        image_input = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        return image_input
+        assert img is not None, "file could not be read, check with os.path.exists()"
 
-    def get_rect_points(self, img, img_input):
-        image_rows, image_cols = img.shape
+        return img
 
-        results = self.face_detection.process(img_input)
-        detection = results.detections[0]
-        location = detection.location_data
-
-        relative_bounding_box = location.relative_bounding_box
-
-        rect_start_point = _normalized_to_pixel_coordinates(
-            relative_bounding_box.xmin, relative_bounding_box.ymin, image_cols,
-            image_rows)
-        rect_end_point = _normalized_to_pixel_coordinates(
-            relative_bounding_box.xmin + relative_bounding_box.width,
-            relative_bounding_box.ymin + relative_bounding_box.height, image_cols,
-            image_rows)
-
-        return (rect_start_point, rect_end_point)
-
-    def crop_img(self, rect_points, img_input):
-        xleft, ytop = rect_points[0]
-        xright, ybot = rect_points[1]
-
-        crop_img = img_input[ytop: ybot, xleft: xright]
-        return crop_img
+    def get_img(self, path):
+        return self.read_img(path) or None
