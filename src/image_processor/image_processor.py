@@ -31,9 +31,19 @@ class ImageProcessor:
 
     # private
 
-    def binarize_with_adaptative_threshold(self):
-        print('adaptative')
-        pass
+    def binarize_with_adaptative_threshold(self, img, shrink_pixels=None, shrink_size=None):
+        binarized_img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                                              cv2.THRESH_BINARY, 15, 7)
+
+        cv2.imshow('Teste', binarized_img)
+        cv2.waitKey(0)
+
+        binarized_arr = binarized_img.flatten()
+
+        if shrink_pixels:
+            binarized_arr = self._shrink_pixels(binarized_arr, shrink_size)
+
+        return binarized_arr
 
     def binarize_with_basic_threshold(self, img_array, shrink_pixels=None, shrink_size=None):
         binarized_arr = []
@@ -70,7 +80,8 @@ class ImageProcessor:
                     gray_img = self.image_file.get_img(img_path)
 
                     if adaptative_threshold:
-                        self.binarize_with_adaptative_threshold()
+                        print(len(self.binarize_with_adaptative_threshold(
+                            gray_img, shrink_pixels, shrink_size)))
                     else:
                         print(len(self.binarize_with_basic_threshold(
                             gray_img.flatten(), shrink_pixels, shrink_size)))

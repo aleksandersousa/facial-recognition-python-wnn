@@ -23,4 +23,4 @@ class ImageFile:
         return img
 
     def get_img(self, path):
-        return self.read_img(path) or None
+        return self.read_img(path)
