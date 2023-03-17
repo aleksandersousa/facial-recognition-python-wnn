@@ -2,7 +2,7 @@
 import cv2
 import pathlib
 
-from file.file import File
+from file.image_file import ImageFile
 
 
 path = str(pathlib.Path().absolute()) + '/images/training/s1/1.pgm'
@@ -10,12 +10,12 @@ path = path.replace('\\', '/')
 
 
 def main():
-    file = File()
+    image_file = ImageFile()
 
-    img = file.read_img(path)
-    img_input = file.get_img_input(img)
-    rect_points = file.get_rect_points(img, img_input)
-    crop_img = file.crop_img(rect_points, img_input)
+    img = image_file.read_img(path)
+    img_input = image_file.get_img_input(img)
+    rect_points = image_file.get_rect_points(img, img_input)
+    crop_img = image_file.crop_img(rect_points, img_input)
 
     # show
     cv2.imshow("Image", img)

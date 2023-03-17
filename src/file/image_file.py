@@ -3,7 +3,7 @@ import mediapipe as mp
 from mediapipe.python.solutions.drawing_utils import _normalized_to_pixel_coordinates
 
 
-class File:
+class ImageFile:
     def __init__(self):
         # INITIALIZING OBJECTS
         self.mp_face_detection = mp.solutions.face_detection
