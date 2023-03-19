@@ -1,9 +1,9 @@
-from image_processor.image_processor import ImageProcessor
+from perform import Perform
 
 
 def main():
-    image_processor = ImageProcessor()
-    image_processor.process_training_images(adaptative_threshold=True)
+    perform = Perform()
+    perform.start()
 
 
 if __name__ == '__main__':
