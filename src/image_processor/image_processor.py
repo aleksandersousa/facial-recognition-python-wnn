@@ -10,50 +10,51 @@ CSV_HEADER = ['label', 'input_bits']
 
 class ImageProcessor:
     def __init__(self) -> None:
-        self.image_file = ImageFile()
+        self.__image_file = ImageFile()
 
-        self.training_path = str(
+        self.__training_path = str(
             pathlib.Path().absolute()) + '/images/training/'
-        self.testing_path = str(pathlib.Path().absolute()) + '/images/testing/'
+        self.__testing_path = str(
+            pathlib.Path().absolute()) + '/images/testing/'
 
-        self.dts_training_dataset_path = str(
+        self.__dts_training_dataset_path = str(
             pathlib.Path().absolute()) + '/dataset/training/'
-        self.dts_testing_dataset_path = str(
+        self.__dts_testing_dataset_path = str(
             pathlib.Path().absolute()) + '/dataset/testing/'
 
-        self.training_path = self.training_path.replace('\\', '/')
-        self.testing_path = self.testing_path.replace('\\', '/')
+        self.__training_path = self.__training_path.replace('\\', '/')
+        self.__testing_path = self.__testing_path.replace('\\', '/')
 
-        self.dts_training_dataset_path = self.dts_training_dataset_path.replace(
+        self.__dts_training_dataset_path = self.__dts_training_dataset_path.replace(
             '\\', '/')
-        self.dts_testing_dataset_path = self.dts_testing_dataset_path.replace(
+        self.__dts_testing_dataset_path = self.__dts_testing_dataset_path.replace(
             '\\', '/')
 
     def process_training_images(self, set_type, shrink_pixels=None, shrink_size=None, adaptative_threshold=None):
         if shrink_pixels:
             assert shrink_size is not None, "shrink_size is mandatory when passing shrink_pixels"
 
-        dts_path = self.dts_training_dataset_path + 'training_' + set_type + '.csv'
+        dts_path = self.__dts_training_dataset_path + 'training_' + set_type + '.csv'
 
         file_path = pathlib.Path(dts_path)
         if not file_path.is_file():
-            self.process_images(self.training_path, dts_path,
-                                shrink_pixels, shrink_size, adaptative_threshold)
+            self.__process_images(self.__training_path, dts_path,
+                                  shrink_pixels, shrink_size, adaptative_threshold)
 
     def process_testing_images(self, set_type, shrink_pixels=None, shrink_size=None, adaptative_threshold=None):
         if shrink_pixels:
             assert shrink_size is not None, "shrink_size is mandatory when passing shrink_pixels"
 
-        dts_path = self.dts_testing_dataset_path + 'testing_' + set_type + '.csv'
+        dts_path = self.__dts_testing_dataset_path + 'testing_' + set_type + '.csv'
 
         file_path = pathlib.Path(dts_path)
         if not file_path.is_file():
-            self.process_images(self.testing_path, dts_path,
-                                shrink_size, shrink_pixels, adaptative_threshold)
+            self.__process_images(self.__testing_path, dts_path,
+                                  shrink_size, shrink_pixels, adaptative_threshold)
 
     # private
 
-    def binarize_with_adaptative_threshold(self, img, shrink_pixels=None, shrink_size=None):
+    def __binarize_with_adaptative_threshold(self, img, shrink_pixels=None, shrink_size=None):
         binarized_img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
                                               cv2.THRESH_BINARY_INV, 15, 7)
 
@@ -61,27 +62,27 @@ class ImageProcessor:
         binarized_arr = []
 
         if shrink_pixels:
-            binarized_arr = self._binarize_shrink_image(
-                self._shrink_pixels(binarized_img_arr, shrink_size))
+            binarized_arr = self.__binarize_shrink_image(
+                self.__shrink_pixels(binarized_img_arr, shrink_size))
         else:
-            binarized_arr = self._binarize_normal_image(binarized_img_arr)
+            binarized_arr = self.__binarize_normal_image(binarized_img_arr)
 
         return binarized_arr
 
-    def binarize_with_basic_threshold(self, img, shrink_pixels=None, shrink_size=None):
+    def __binarize_with_basic_threshold(self, img, shrink_pixels=None, shrink_size=None):
         _, binarized_img = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY_INV)
 
         binarized_arr = binarized_img.flatten()
 
         if shrink_pixels:
-            binarized_arr = self._binarize_shrink_image(
-                self._shrink_pixels(binarized_arr, shrink_size))
+            binarized_arr = self.__binarize_shrink_image(
+                self.__shrink_pixels(binarized_arr, shrink_size))
         else:
-            binarized_arr = self._binarize_normal_image(binarized_arr)
+            binarized_arr = self.__binarize_normal_image(binarized_arr)
 
         return binarized_arr
 
-    def process_images(self, path, dts_path, shrink_pixels=None, shrink_size=None, adaptative_threshold=None):
+    def __process_images(self, path, dts_path, shrink_pixels=None, shrink_size=None, adaptative_threshold=None):
         def sort_func(e):
             return len(e)
 
@@ -102,27 +103,27 @@ class ImageProcessor:
                     for special_file in files:
                         img_path = os.path.join(
                             folder, sub_folder + '/' + special_file).replace("\\", "/")
-                        gray_img = self.image_file.get_img(img_path)
+                        gray_img = self.__image_file.get_img(img_path)
 
                         binarized_img_arr = []
 
                         if adaptative_threshold:
-                            binarized_img_arr = self.binarize_with_adaptative_threshold(
+                            binarized_img_arr = self.__binarize_with_adaptative_threshold(
                                 gray_img, shrink_pixels, shrink_size)
                         else:
-                            binarized_img_arr = self.binarize_with_basic_threshold(
+                            binarized_img_arr = self.__binarize_with_basic_threshold(
                                 gray_img, shrink_pixels, shrink_size)
 
-                        data = [sub_folder, self._to_binary_string(
+                        data = [sub_folder, self.__to_binary_string(
                             binarized_img_arr)]
 
                         # write the data
                         writer.writerow(data)
 
-    def _average(self, arr):
+    def __average(self, arr):
         return sum(arr) / len(arr)
 
-    def _shrink_pixels(self, img_array, shrink_size):
+    def __shrink_pixels(self, img_array, shrink_size):
         counter = 1
         reduced_img_arr = []
         pixel_sum = 0
@@ -139,10 +140,10 @@ class ImageProcessor:
 
         return reduced_img_arr
 
-    def _binarize_shrink_image(self, reduced_img_arr):
+    def __binarize_shrink_image(self, reduced_img_arr):
         binarized_arr = []
 
-        luminance_average = self._average(reduced_img_arr)
+        luminance_average = self.__average(reduced_img_arr)
 
         for pixel in reduced_img_arr:
             if pixel > luminance_average:
@@ -152,8 +153,8 @@ class ImageProcessor:
 
         return binarized_arr
 
-    def _binarize_normal_image(self, img_arr):
+    def __binarize_normal_image(self, img_arr):
         return map(lambda x: x if x != 255 else 1, img_arr)
 
-    def _to_binary_string(self, binarized_img_arr):
+    def __to_binary_string(self, binarized_img_arr):
         return ''.join(map(str, binarized_img_arr))
