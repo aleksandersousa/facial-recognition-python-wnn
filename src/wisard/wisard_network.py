@@ -1,5 +1,5 @@
 import random
-from wisard.discriminator import Discriminator
+from src.wisard.discriminator import Discriminator
 
 
 class WisardNetwork():

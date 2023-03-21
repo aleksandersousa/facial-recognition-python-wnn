@@ -1,4 +1,4 @@
-from wisard.node import Node
+from src.wisard.node import Node
 
 
 class Discriminator():

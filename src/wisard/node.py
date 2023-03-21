@@ -1,4 +1,4 @@
-from wisard.memory import Memory
+from src.wisard.memory import Memory
 
 
 class Node():
