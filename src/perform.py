@@ -1,8 +1,8 @@
 import pathlib
 
 from image_processor.image_processor import ImageProcessor
-from wisard.wisard_network import WisardNetwork
-from file.dataset_file import DatasetFile
+from wisard.wisard_network.wisard_network import WisardNetwork
+from file.dataset_file.dataset_file import DatasetFile
 
 
 class Perform():

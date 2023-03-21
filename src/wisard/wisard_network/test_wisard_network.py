@@ -1,4 +1,4 @@
-from src.wisard.wisard_network import WisardNetwork
+from wisard.wisard_network.wisard_network import WisardNetwork
 
 
 def test_unique():

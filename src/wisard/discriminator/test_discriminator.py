@@ -1,5 +1,5 @@
 import pytest
-from src.wisard.discriminator import Discriminator
+from wisard.discriminator.discriminator import Discriminator
 
 
 def test_create_discriminator():

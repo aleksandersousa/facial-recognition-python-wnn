@@ -1,4 +1,4 @@
-from src.wisard.node import Node
+from wisard.node.node import Node
 
 
 def test_init_memory():
