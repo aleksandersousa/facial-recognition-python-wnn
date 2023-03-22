@@ -39,7 +39,6 @@ class Perform():
 
     def start(self):
         print('processando imagens...')
-        print()
 
         self.__process_images()
 
@@ -71,10 +70,10 @@ class Perform():
             self.datasets[DATASET_TYPE]['testing'])['bits']
 
         network = WisardNetwork(tuple_size=4)
-        network.train(labels=training_labels,
-                      input_patterns=training_input_patterns)
+        network.train(training_labels, training_input_patterns, True)
+
         results = network.test(
-            labels=testing_labels, input_patterns=testing_input_patterns)
+            testing_labels, testing_input_patterns, True)
 
         self.__print_results(results)
 

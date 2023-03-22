@@ -106,7 +106,7 @@ class WisardNetwork():
                 greatest_discriminators.clear()
 
                 for discriminator in self.__discriminators:
-                    output = discriminator.test(pattern)
+                    output = discriminator.test(pattern, True, bleaching_type)
 
                     if output > greatest_output:
                         greatest_output = output
