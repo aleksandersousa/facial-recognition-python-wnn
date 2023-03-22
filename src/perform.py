@@ -13,27 +13,27 @@ class Perform():
         self.datasets = [
             {
                 'training': str(pathlib.Path().absolute()) +
-                '/dataset/training/training_face_a_ap.csv',
+                '/src/dataset/training/training_face_a_ap.csv',
                 'testing': str(pathlib.Path().absolute()) +
-                '/dataset/testing/testing_face_a_ap.csv'
+                '/src/dataset/testing/testing_face_a_ap.csv'
             },
             {
                 'training': str(pathlib.Path().absolute()) +
-                '/dataset/training/training_face_a_sp.csv',
+                '/src/dataset/training/training_face_a_sp.csv',
                 'testing': str(pathlib.Path().absolute()) +
-                '/dataset/testing/testing_face_a_sp.csv'
+                '/src/dataset/testing/testing_face_a_sp.csv'
             },
             {
                 'training': str(pathlib.Path().absolute()) +
-                '/dataset/training/training_face_b_ap.csv',
+                '/src/dataset/training/training_face_b_ap.csv',
                 'testing': str(pathlib.Path().absolute()) +
-                '/dataset/testing/testing_face_b_ap.csv'
+                '/src/dataset/testing/testing_face_b_ap.csv'
             },
             {
                 'training': str(pathlib.Path().absolute()) +
-                '/dataset/training/training_face_b_sp.csv',
+                '/src/dataset/training/training_face_b_sp.csv',
                 'testing': str(pathlib.Path().absolute()) +
-                '/dataset/testing/testing_face_b_sp.csv'
+                '/src/dataset/testing/testing_face_b_sp.csv'
             }
         ]
 

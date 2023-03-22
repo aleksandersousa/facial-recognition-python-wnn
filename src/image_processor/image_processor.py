@@ -18,9 +18,9 @@ class ImageProcessor:
             pathlib.Path().absolute()) + '/images/testing/'
 
         self.__dts_training_dataset_path = str(
-            pathlib.Path().absolute()) + '/dataset/training/'
+            pathlib.Path().absolute()) + '/src/dataset/training/'
         self.__dts_testing_dataset_path = str(
-            pathlib.Path().absolute()) + '/dataset/testing/'
+            pathlib.Path().absolute()) + '/src/dataset/testing/'
 
         self.__training_path = self.__training_path.replace('\\', '/')
         self.__testing_path = self.__testing_path.replace('\\', '/')
