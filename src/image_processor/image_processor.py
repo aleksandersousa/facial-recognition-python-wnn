@@ -2,6 +2,7 @@ import pathlib
 import os
 import cv2
 import csv
+import numpy as np
 
 from file.image_file import ImageFile
 
@@ -50,7 +51,7 @@ class ImageProcessor:
         file_path = pathlib.Path(dts_path)
         if not file_path.is_file():
             self.__process_images(self.__testing_path, dts_path,
-                                  shrink_size, shrink_pixels, adaptative_threshold)
+                                  shrink_pixels, shrink_size, adaptative_threshold)
 
     # private
 
@@ -58,12 +59,13 @@ class ImageProcessor:
         binarized_img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
                                               cv2.THRESH_BINARY_INV, 15, 7)
 
-        binarized_img_arr = binarized_img.flatten()
+        binarized_img_arr = np.concatenate(binarized_img).ravel().tolist()
         binarized_arr = []
 
         if shrink_pixels:
-            binarized_arr = self.__binarize_shrink_image(
-                self.__shrink_pixels(binarized_img_arr, shrink_size))
+            reduced_img_arr = self.__shrink_pixels(
+                binarized_img_arr, shrink_size)
+            binarized_arr = self.__binarize_shrink_image(reduced_img_arr)
         else:
             binarized_arr = self.__binarize_normal_image(binarized_img_arr)
 
@@ -124,18 +126,29 @@ class ImageProcessor:
         return sum(arr) / len(arr)
 
     def __shrink_pixels(self, img_array, shrink_size):
-        counter = 1
         reduced_img_arr = []
-        pixel_sum = 0
+        sub_set = []
+        counter = 1
 
         for pixel_fragment in img_array:
-            pixel_sum += pixel_fragment
-
             if counter == shrink_size:
-                reduced_img_arr.append(pixel_sum / shrink_size)
+                num_of_zeros = 0
+                num_of_ones = 0
+                for pixel in sub_set:
+                    if pixel == 0:
+                        num_of_zeros += 1
+                    else:
+                        num_of_ones += 1
+
+                if num_of_ones >= num_of_zeros:
+                    reduced_img_arr.append(255)
+                else:
+                    reduced_img_arr.append(0)
+
                 counter = 1
-                pixel_sum = 0
+                sub_set = []
             else:
+                sub_set.append(pixel_fragment)
                 counter += 1
 
         return reduced_img_arr

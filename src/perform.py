@@ -57,7 +57,7 @@ class Perform():
     # private
 
     def __execute(self):
-        DATASET_TYPE = 2
+        DATASET_TYPE = 3
 
         training_labels = self.dataset_file.read_dataset_file(
             self.datasets[DATASET_TYPE]['training'])['labels']
@@ -70,10 +70,10 @@ class Perform():
             self.datasets[DATASET_TYPE]['testing'])['bits']
 
         network = WisardNetwork(tuple_size=4)
-        network.train(training_labels, training_input_patterns, True)
+        network.train(training_labels, training_input_patterns)
 
         results = network.test(
-            testing_labels, testing_input_patterns, True)
+            testing_labels, testing_input_patterns)
 
         self.__print_results(results)
 
